@@ -11,12 +11,12 @@ const PORT = process.env.PORT || 8000;
 
 /* ------------------------------------------------------- */
 // Accept json data:
-app.use(express.json())
+app.use(express.json())    //json data gonderdıgımızı soyluyoruz express e
 
 // Catch async-errors:
 require('express-async-errors')
 
-// app.all('/abc', (req, res) => { // Allow all methods. all -> URL=/ - use -> URL=/*
+// app.all('/abc', (req, res) => { // Allow all methods. all -> URL=/ - use -> URL=/* //app all dedıgınde tum methodlar icin gecelri olur. '/' varsa sadece anaysayfaya gıder  app use kullanırsak abc yle baslayan ve devam eden trum ıstekler olur. onemlı olan abc ıle baslaması.
 //     res.send('WELCOME TO TODO API')
 // })
 /* ------------------------------------------------------- */
@@ -30,20 +30,20 @@ const sequelize = new Sequelize('sqlite:./db.sqlite3')
 // her bir model, veritabanında bir tabloya denk gelir.
 // sequelize.define('tableName', {  modelDetails  })
 
-const Todo = sequelize.define('todos', {
+const Todo = sequelize.define('todos', {   //model isimleri buyuk harfle olur //model olusturma 
 
-    // ilk sutun olarak id sutunu sequelize tarafından otomatik oluşturulur/yönetilir.
+    // ilk sutun olarak id sutunu sequelize tarafından otomatik oluşturulur/yönetilir. olusturmaya gerek yok. her kayıtta 1 artar. yani id field name diye belirtmeme gerek yok.
     // id: {
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false, // default: true
-    //     unique: true, // default: false
-    //     comment: 'description',
+    //     type: DataTypes.INTEGER,   //dırekt verı tiipi yazılamıyo datatypes yazmak gerekiyr
+    //     allowNull: false, // default: true  // ıd bos bırakılabilir mi diye bunu yazıyoeruz
+    //     unique: true, // default: false   //aynı kayıttan bırden fazla olabilir mi diye bakiyoruz
+    //     comment: 'description',   //
     //     primaryKey: true, // default: false
     //     autoIncrement: true, // default: false
     //     field: 'custom_name',
     //     defaultValue: 'default', // default: null
     // },
-
+    // onemlı olan ılk ucu. genelde onları kullanacagiz
     title: {
         type: DataTypes.STRING,
         allowNull: false
@@ -69,7 +69,7 @@ const Todo = sequelize.define('todos', {
 
 // Syncronization:
 // Model bilgilerini db'ye uygula:
-// sequelize.sync() // CREATE TABLE
+//sequelize.sync() // CREATE TABLE //arka tarafta sql diliyle haberlesir //surekli acik kalmamali yoksa db yi sifirlar
 // sequelize.sync({ force: true }) // DROP TABLE & CREATE TABLE
 // sequelize.sync({ alter: true }) // TO BACKUP & DROP TABLE & CREATE TABLE & FROM BACKUP
 
