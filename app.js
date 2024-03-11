@@ -32,7 +32,7 @@ const sequelize = new Sequelize('sqlite:./db.sqlite3')
 
 const Todo = sequelize.define('todos', {   //model isimleri buyuk harfle olur //model olusturma 
 
-    // ilk sutun olarak id sutunu sequelize tarafından otomatik oluşturulur/yönetilir. olusturmaya gerek yok. her kayıtta 1 artar. yani id field name diye belirtmeme gerek yok.
+    // //     // ilk sutun olarak id sutunu sequelize tarafından otomatik oluşturulur/yönetilir. olusturmaya gerek yok. her kayıtta 1 artar. yani id field name diye belirtmeme gerek yok.
     // id: {
     //     type: DataTypes.INTEGER,   //dırekt verı tiipi yazılamıyo datatypes yazmak gerekiyr
     //     allowNull: false, // default: true  // ıd bos bırakılabilir mi diye bunu yazıyoeruz
@@ -40,9 +40,9 @@ const Todo = sequelize.define('todos', {   //model isimleri buyuk harfle olur //
     //     comment: 'description',   //
     //     primaryKey: true, // default: false
     //     autoIncrement: true, // default: false
-    //     field: 'custom_name',
-    //     defaultValue: 'default', // default: null
-    // },
+    // field: 'custom_name',
+    //    defaultValue: 'default', // default: null
+    //  },
     // onemlı olan ılk ucu. genelde onları kullanacagiz
     title: {
         type: DataTypes.STRING,
@@ -56,7 +56,6 @@ const Todo = sequelize.define('todos', {   //model isimleri buyuk harfle olur //
         allowNull: false,
         default: 0
     },
-
     isDone: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
@@ -69,12 +68,12 @@ const Todo = sequelize.define('todos', {   //model isimleri buyuk harfle olur //
 
 // Syncronization:
 // Model bilgilerini db'ye uygula:
-//sequelize.sync() // CREATE TABLE //arka tarafta sql diliyle haberlesir //surekli acik kalmamali yoksa db yi sifirlar
+//sequelize.sync() // CREATE TABLE //arka tarafta sql diliyle haberlesir //surekli acik kalmamali yoksa db yi sifirlar //veri tabani sifirdan olusturalacaksa
 // sequelize.sync({ force: true }) // DROP TABLE & CREATE TABLE
-// sequelize.sync({ alter: true }) // TO BACKUP & DROP TABLE & CREATE TABLE & FROM BACKUP
+// sequelize.sync({ alter: true }) // TO BACKUP & DROP TABLE & CREATE TABLE & FROM BACKUP //veri tabaninda degisiklik yapilacaksa 
 
 // Connect to db:
-sequelize.authenticate()
+sequelize.authenticate() //database e baglanma methodu
     .then(() => console.log('* DB Connected *'))
     .catch(() => console.log('* DB Not Connected *'))
 
@@ -83,11 +82,11 @@ sequelize.authenticate()
 
 const router = express.Router()
 
-// LIST TODOS:
+// // LIST TODOS:
 router.get('/', async (req, res) => {
 
     // const data = await Todo.findAll()
-    const data = await Todo.findAndCountAll()
+    const data = await Todo.findAndCountAll() //tum kayitlarin sayisini verir
 
     res.status(200).send({
         error: false,
@@ -100,7 +99,7 @@ router.get('/', async (req, res) => {
 // CREATE TODO:
 router.post('/', async (req, res) => {
 
-    // const receivedData = req.body
+    const receivedData = req.body
 
     // const data = await Todo.create({
     //     title: receivedData.title,
@@ -121,8 +120,21 @@ router.post('/', async (req, res) => {
 // READ TODO:
 router.get('/:id', async (req, res) => {
 
-    // const data = await Todo.findOne({ where: { id: req.params.id } })
-    const data = await Todo.findByPk(req.params.id)
+    //const data = await Todo.findOne({ where: { id: req.params.id } })
+    const data = await Todo.findByPk(req.params.id) //await ayazdigimiz icin yukari async yaziyoruz
+
+    res.status(200).send({
+        error: false,
+        result: data
+    })
+
+})
+
+//Uptade todo
+router.put('/:id', async (req, res) => {
+
+    //const data = await Todo.update({   } })
+    const data = await Todo.update(req.params.id)
 
     res.status(200).send({
         error: false,
@@ -134,16 +146,16 @@ router.get('/:id', async (req, res) => {
 app.use(router)
 
 /* ------------------------------------------------------- */
-const errorHandler = (err, req, res, next) => {
-    const errorStatusCode = res.errorStatusCode ?? 500
-    console.log('errorHandler worked.')
-    res.status(errorStatusCode).send({
-        error: true, // special data
-        message: err.message, // error string message
-        cause: err.cause, // error option cause
-        // stack: err.stack, // error details
-    })
-}
-app.use(errorHandler)
+// const errorHandler = (err, req, res, next) => {
+//     const errorStatusCode = res.errorStatusCode ?? 500
+//     console.log('errorHandler worked.')
+//     res.status(errorStatusCode).send({
+//         error: true, // special data
+//         message: err.message, // error string message
+//         cause: err.cause, // error option cause
+//         // stack: err.stack, // error details
+//     })
+// }
+// app.use(errorHandler)
 /* ------------------------------------------------------- */
 app.listen(PORT, () => console.log("Running: http://127.0.0.1:" + PORT));
