@@ -19,7 +19,7 @@ require('express-async-errors')
 // app.all('/abc', (req, res) => { // Allow all methods. all -> URL=/ - use -> URL=/* //app all dedıgınde tum methodlar icin gecelri olur. '/' varsa sadece anaysayfaya gıder  app use kullanırsak abc yle baslayan ve devam eden trum ıstekler olur. onemlı olan abc ıle baslaması.
 //     res.send('WELCOME TO TODO API')
 // })
-/* ------------------------------------------------------- */
+/* ------------------------------------------------------- 
 // MODELS:
 
 const { Sequelize, DataTypes } = require('sequelize')
@@ -77,22 +77,25 @@ sequelize.authenticate() //database e baglanma methodu
     .then(() => console.log('* DB Connected *'))
     .catch(() => console.log('* DB Not Connected *'))
 
-/* ------------------------------------------------------- */
+ ------------------------------------------------------- */
+
+/*------------------------------------------------------- 
 // ROUTERS:
+const Todo = require('./todo.model')
 
 const router = express.Router()
 
 // // LIST TODOS:
-// router.get('/', async (req, res) => {
+router.get('/', async (req, res) => {
 
-//     // const data = await Todo.findAll()
-//     const data = await Todo.findAndCountAll() //tum kayitlarin sayisini verir
+    // const data = await Todo.findAll()
+    const data = await Todo.findAndCountAll() //tum kayitlarin sayisini verir
 
-//     res.status(200).send({
-//         error: false,
-//         result: data
-//     })
-// })
+    res.status(200).send({
+        error: false,
+        result: data
+    })
+})
 
 //? CRUD Processes:
 
@@ -131,40 +134,40 @@ const router = express.Router()
 // })
 
 //Uptade todo
-router.put('/:id', async (req, res) => {
+// router.put('/:id', async (req, res) => {
 
-    //const data = await Todo.update({....newdata}, {where} })
-    const data = await Todo.update(req.body, { where: { id: req.params.id } })
+//     //const data = await Todo.update({....newdata}, {where} })
+//     const data = await Todo.update(req.body, { where: { id: req.params.id } })
 
-    res.status(202).send({ //guncelleme status kodu
-        error: false,
-        message: "updated",
-        body: req.body,
-        result: data,  //kac kayit guncelledim onu gosterir
-        new: await Todo.findByPk(req.params.id) //gncelledigim datayi gosterir
-    })
+//     res.status(202).send({ //guncelleme status kodu
+//         error: false,
+//         message: "updated",
+//         body: req.body,
+//         result: data,  //kac kayit guncelledim onu gosterir
+//         new: await Todo.findByPk(req.params.id) //gncelledigim datayi gosterir
+//     })
 
-})
+// })
 
 //Delete todo
 
-router.delete('/:id', async (req, res) => {
+// router.delete('/:id', async (req, res) => {
 
-    //const data = await Todo.destroy({where} })
-    const data = await Todo.destroy({ where: { id: req.params.id } })
+//     //const data = await Todo.destroy({where} })
+//     const data = await Todo.destroy({ where: { id: req.params.id } })
 
-    res.status(204).send({ //silme status kodu
-        error: false,
-        message: "deleted",
-        result: data,  //kac kayit sildim onu gosterir
+//     res.status(204).send({ //silme status kodu
+//         error: false,
+//         message: "deleted",
+//         result: data,  //kac kayit sildim onu gosterir
 
-    }) // 204 no content icerik vermeyebilri. 
+//     }) // 204 no content icerik vermeyebilri. 
 
-})
+// })
 
 app.use(router)
 
-/* ------------------------------------------------------- */
+ ------------------------------------------------------- */
 // const errorHandler = (err, req, res, next) => {
 //     const errorStatusCode = res.errorStatusCode ?? 500
 //     console.log('errorHandler worked.')
